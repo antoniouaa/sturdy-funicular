@@ -1,15 +1,15 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, nanoid } from "@reduxjs/toolkit";
 
 const initialState = [
   {
-    id: "1",
+    id: nanoid(),
     description: "Human protein 1",
     species: "Homo sapiens",
     sequence: "ACGT",
     type: "PROTEIN_FULL",
   },
   {
-    id: "2",
+    id: nanoid(),
     description: "Canine RNA 1",
     species: "Canis lupus",
     sequence: "TGCA",
@@ -24,9 +24,19 @@ const sequencesSlice = createSlice({
     sequenceAdded(state, action) {
       state.push(action.payload);
     },
+    sequenceUpdated(state, action) {
+      const { id, description, species, sequence, type } = action.payload;
+      const existingSequence = state.find((seq) => seq.id === id);
+      if (existingSequence) {
+        existingSequence.description = description;
+        existingSequence.species = species;
+        existingSequence.sequence = sequence;
+        existingSequence.type = type;
+      }
+    },
   },
 });
 
-export const { sequenceAdded } = sequencesSlice.actions;
+export const { sequenceAdded, sequenceUpdated } = sequencesSlice.actions;
 
 export default sequencesSlice.reducer;

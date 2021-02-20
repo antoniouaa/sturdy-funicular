@@ -1,5 +1,6 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 export const SequencePage = ({ match }) => {
   const { sequenceId } = match.params;
@@ -22,6 +23,9 @@ export const SequencePage = ({ match }) => {
         <h4>{sequence.description}</h4>
         <p>{sequence.type}</p>
         <p>{sequence.sequence}</p>
+        <Link to={`/sequences/${sequence.id}/edit`} className="button">
+          Edit Sequence
+        </Link>
       </article>
     </section>
   );

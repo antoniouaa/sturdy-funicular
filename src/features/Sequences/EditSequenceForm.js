@@ -1,16 +1,23 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { nanoid } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
-import { sequenceAdded } from "./sequencesSlice";
+import { sequenceUpdated } from "./sequencesSlice";
 
-export const AddSequenceForm = () => {
-  const [description, setDescription] = useState("");
-  const [species, setSpecies] = useState("");
-  const [sequence, setSequence] = useState("");
-  const [type, setType] = useState("");
+export const EditSequenceForm = ({ match }) => {
+  const { sequenceId } = match.params;
+  console.log(match.params);
+  const seq = useSelector((state) =>
+    state.sequences.find((seq) => seq.id === sequenceId)
+  );
+
+  const [description, setDescription] = useState(seq.description);
+  const [species, setSpecies] = useState(seq.species);
+  const [sequence, setSequence] = useState(seq.sequence);
+  const [type, setType] = useState(seq.type);
 
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const onDescriptionChange = (e) => setDescription(e.target.value);
   const onSpeciesChange = (e) => setSpecies(e.target.value);
@@ -20,24 +27,21 @@ export const AddSequenceForm = () => {
   const onSaveClick = () => {
     if (description && species && sequence && type) {
       dispatch(
-        sequenceAdded({
-          id: nanoid(),
+        sequenceUpdated({
+          id: sequenceId,
           description,
           species,
           sequence,
           type,
         })
       );
-      setDescription("");
-      setSpecies("");
-      setSequence("");
-      setType("");
+      history.push(`/sequences/${sequenceId}`);
     }
   };
 
   return (
     <section>
-      <h2>Add new sequence:</h2>
+      <h2>Edit sequence:</h2>
       <form>
         <label htmlFor="sequenceDescription">Description: </label>
         <input
