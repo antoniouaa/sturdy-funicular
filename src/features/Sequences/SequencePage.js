@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 export const SequencePage = ({ match }) => {
   const { sequenceId } = match.params;
   const sequence = useSelector((state) =>
-    state.sequences.find((seq) => seq.id === sequenceId)
+    state.sequences.sequences.find((seq) => seq.id.toString() === sequenceId)
   );
 
   if (!sequence) {

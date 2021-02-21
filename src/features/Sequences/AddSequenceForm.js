@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { nanoid } from "@reduxjs/toolkit";
+import { useDispatch, useSelector } from "react-redux";
 
 import { sequenceAdded } from "./sequencesSlice";
 
@@ -9,24 +8,29 @@ export const AddSequenceForm = () => {
   const [species, setSpecies] = useState("");
   const [sequence, setSequence] = useState("");
   const [type, setType] = useState("");
+  const [userId, setUserId] = useState("");
 
   const dispatch = useDispatch();
+
+  const users = useSelector((state) => state.users);
 
   const onDescriptionChange = (e) => setDescription(e.target.value);
   const onSpeciesChange = (e) => setSpecies(e.target.value);
   const onSequenceChange = (e) => setSequence(e.target.value);
   const onTypeChange = (e) => setType(e.target.value);
 
+  const onAuthorChange = (e) => setUserId(e.target.value);
+
   const onSaveClick = () => {
     if (description && species && sequence && type) {
       dispatch(
-        sequenceAdded({
-          id: nanoid(),
+        sequenceAdded(
           description,
           species,
-          sequence,
-          type,
-        })
+          sequence.toUpperCase(),
+          type.toUpperCase(),
+          userId
+        )
       );
       setDescription("");
       setSpecies("");
@@ -35,10 +39,29 @@ export const AddSequenceForm = () => {
     }
   };
 
+  const canSave =
+    Boolean(description) &&
+    Boolean(species) &&
+    Boolean(sequence) &&
+    Boolean(type) &&
+    Boolean(userId);
+
+  const userOptions = users.map((user) => (
+    <option key={user.id} value={user.id}>
+      {user.username}
+    </option>
+  ));
+
   return (
     <section>
       <h2>Add new sequence:</h2>
       <form>
+        <label htmlFor="sequenceAuthor">Author: </label>
+        <select id="sequenceAuthor" value={userId} onChange={onAuthorChange}>
+          <option value=""></option>
+          {userOptions}
+        </select>
+        <br />
         <label htmlFor="sequenceDescription">Description: </label>
         <input
           type="text"
@@ -75,7 +98,12 @@ export const AddSequenceForm = () => {
           onChange={onTypeChange}
         />
         <br />
-        <input type="button" value="Save Sequence" onClick={onSaveClick} />
+        <input
+          type="button"
+          value="Save Sequence"
+          disabled={!canSave}
+          onClick={onSaveClick}
+        />
       </form>
     </section>
   );

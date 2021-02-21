@@ -3,6 +3,7 @@ import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import "./App.css";
 
 import { Navbar } from "./app/Navbar";
+import { Sidebar } from "./app/Sidebar";
 import { AddSequenceForm } from "./features/Sequences/AddSequenceForm";
 import { EditSequenceForm } from "./features/Sequences/EditSequenceForm";
 import { SequencePage } from "./features/Sequences/SequencePage";
@@ -13,13 +14,14 @@ function App() {
     <BrowserRouter>
       <Navbar />
       <div className="App">
+        <Sidebar />
         <Switch>
           <Route
             exact
             path="/"
             render={() => (
               <React.Fragment>
-                <AddSequenceForm />
+                {/* <AddSequenceForm /> */}
                 <SequencesList />
               </React.Fragment>
             )}
@@ -30,7 +32,7 @@ function App() {
             path="/sequences/:sequenceId/edit"
             component={EditSequenceForm}
           />
-          {/* <Redirect to="/" /> */}
+          <Redirect to="/" />
         </Switch>
       </div>
     </BrowserRouter>

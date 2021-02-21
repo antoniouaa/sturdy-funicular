@@ -1,18 +1,28 @@
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
-export const SequencesList = () => {
-  const sequences = useSelector((state) => state.sequences);
+import { fetchSequences, selectAllSequences } from "./sequencesSlice";
 
-  const renderedSequences = sequences.map((sequence, idx) => (
+export const SequencesList = () => {
+  const dispatch = useDispatch();
+  const sequences = useSelector(selectAllSequences);
+  const sequenceStatus = useSelector((state) => state.sequences.status);
+
+  useEffect(() => {
+    if (sequenceStatus === "idle") {
+      dispatch(fetchSequences());
+    }
+  }, [sequenceStatus, dispatch]);
+
+  const renderedSequences = sequences.map((seq, idx) => (
     <div className="sequence-excerpt" key={idx}>
-      <h3>{sequence.description}</h3>
+      <h3>{seq.description}</h3>
       <p>
-        {sequence.species} - Type: {sequence.type}
+        {seq.species} - Type: {seq.type}
       </p>
-      <p className="sequence-content">{sequence.sequence.toUpperCase()}</p>
-      <Link to={`/sequences/${sequence.id}`} className="button muted-button">
+      <p className="sequence-content">{seq.sequence.toUpperCase()}</p>
+      <Link to={`/sequences/${seq.id}`} className="button muted-button">
         View Sequence
       </Link>
     </div>

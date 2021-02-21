@@ -6,9 +6,8 @@ import { sequenceUpdated } from "./sequencesSlice";
 
 export const EditSequenceForm = ({ match }) => {
   const { sequenceId } = match.params;
-  console.log(match.params);
   const seq = useSelector((state) =>
-    state.sequences.find((seq) => seq.id === sequenceId)
+    state.sequences.sequences.find((seq) => seq.id === sequenceId)
   );
 
   const [description, setDescription] = useState(seq.description);
