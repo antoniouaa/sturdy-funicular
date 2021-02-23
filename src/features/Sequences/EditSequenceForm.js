@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-import { sequenceUpdated } from "./sequencesSlice";
+import { patchSequence } from "./sequencesSlice";
 
 export const EditSequenceForm = ({ match }) => {
   const { sequenceId } = match.params;
@@ -26,7 +26,7 @@ export const EditSequenceForm = ({ match }) => {
   const onSaveClick = () => {
     if (description && species && sequence && type) {
       dispatch(
-        sequenceUpdated({
+        patchSequence({
           id: sequenceId,
           description,
           species,

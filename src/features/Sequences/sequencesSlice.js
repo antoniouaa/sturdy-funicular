@@ -1,5 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+import { RouteError } from "../../utils/Exceptions";
+
 const token = "";
 const initialState = {
   sequences: [],
@@ -27,8 +29,16 @@ export const postSequence = createAsyncThunk("postSequence", async (body) => {
   });
   const data = await response.json();
   console.log("data:", data);
-  return data.data.attributes;
+  if (response.status === 201) {
+    return data.data.attributes;
+  }
+  throw new RouteError(data.errors);
 });
+
+export const patchSequence = createAsyncThunk(
+  "patchSequence",
+  async (body) => {}
+);
 
 const sequencesSlice = createSlice({
   name: "sequences",
@@ -64,7 +74,5 @@ export const selectAllSequences = (state) => state.sequences.sequences;
 
 export const selectSequenceById = (state, sequenceId) =>
   state.sequences.find((seq) => seq.id === sequenceId);
-
-export const { sequenceAdded, sequenceUpdated } = sequencesSlice.actions;
 
 export default sequencesSlice.reducer;

@@ -7,6 +7,8 @@ import { Sidebar } from "./app/Sidebar";
 import { EditSequenceForm } from "./features/Sequences/EditSequenceForm";
 import { SequencePage } from "./features/Sequences/SequencePage";
 import { SequencesList } from "./features/Sequences/SequencesList";
+import { UserSignupPage } from "./features/Users/UserSignupPage";
+import { UserLoginPage } from "./features/Users/UserLoginPage";
 
 function App() {
   return (
@@ -15,15 +17,9 @@ function App() {
       <div className="App">
         <Sidebar />
         <Switch>
-          <Route
-            exact
-            path="/"
-            render={() => (
-              <React.Fragment>
-                <SequencesList />
-              </React.Fragment>
-            )}
-          />
+          <Route exact path="/" component={SequencesList} />
+          <Route exact path="/signup" component={UserSignupPage} />
+          <Route exact path="/login" component={UserLoginPage} />
           <Route exact path="/sequences/:sequenceId" component={SequencePage} />
           <Route
             exact
