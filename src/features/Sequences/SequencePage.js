@@ -19,7 +19,10 @@ export const SequencePage = ({ match }) => {
   return (
     <section>
       <article className="sequence">
-        <h2>{sequence.species}</h2>
+        <span>
+          <h2>{sequence.species}</h2>
+          {sequence.userId ? `-by ${sequence.userId}` : null}
+        </span>
         <h4>{sequence.description}</h4>
         <p>{sequence.type}</p>
         <p>{sequence.sequence}</p>

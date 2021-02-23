@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
-import { sequenceAdded } from "./sequencesSlice";
+// import { sequenceAdded } from "./sequencesSlice";
+import { postSequence } from "./sequencesSlice";
 
 export const AddSequenceForm = () => {
   const [description, setDescription] = useState("");
@@ -24,13 +25,13 @@ export const AddSequenceForm = () => {
   const onSaveClick = () => {
     if (description && species && sequence && type) {
       dispatch(
-        sequenceAdded(
-          description,
-          species,
-          sequence.toUpperCase(),
-          type.toUpperCase(),
-          userId
-        )
+        postSequence({
+          description: description,
+          species: species,
+          sequence: sequence.toUpperCase(),
+          type: type.toUpperCase(),
+          userId: Boolean(userId) ? userId : "anon",
+        })
       );
       setDescription("");
       setSpecies("");

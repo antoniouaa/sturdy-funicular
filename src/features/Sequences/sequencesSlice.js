@@ -1,5 +1,6 @@
-import { createSlice, nanoid, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
+const token = "";
 const initialState = {
   sequences: [],
   status: "idle",
@@ -7,7 +8,7 @@ const initialState = {
 };
 
 export const fetchSequences = createAsyncThunk("fetchSequences", async () => {
-  const response = await fetch("https://genome-sequencer.herokuapp.com/seq", {
+  const response = await fetch("http://127.0.0.1:5000/seq", {
     method: "GET",
     headers: { "content-type": "application/json" },
   });
@@ -15,39 +16,24 @@ export const fetchSequences = createAsyncThunk("fetchSequences", async () => {
   return data.data.map((seq) => seq.attributes);
 });
 
+export const postSequence = createAsyncThunk("postSequence", async (body) => {
+  const response = await fetch("http://127.0.0.1:5000/seq", {
+    method: "POST",
+    headers: {
+      "content-type": "application/json",
+      authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify(body),
+  });
+  const data = await response.json();
+  console.log("data:", data);
+  return data.data.attributes;
+});
+
 const sequencesSlice = createSlice({
   name: "sequences",
   initialState,
-  reducers: {
-    sequenceAdded: {
-      reducer(state, action) {
-        state.sequences.push(action.payload);
-      },
-      prepare(description, species, sequence, type) {
-        return {
-          payload: {
-            id: nanoid(),
-            description,
-            species,
-            sequence,
-            type,
-          },
-        };
-      },
-    },
-    sequenceUpdated(state, action) {
-      const { id, description, species, sequence, type } = action.payload;
-      const existingSequence = state.sequences.sequences.find(
-        (seq) => seq.id === id
-      );
-      if (existingSequence) {
-        existingSequence.description = description;
-        existingSequence.species = species;
-        existingSequence.sequence = sequence;
-        existingSequence.type = type;
-      }
-    },
-  },
+  reducers: {},
   extraReducers: {
     [fetchSequences.pending]: (state, action) => {
       state.status = "loading";
@@ -60,13 +46,24 @@ const sequencesSlice = createSlice({
       state.status = "failed";
       state.error = action.error.message;
     },
+    [postSequence.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [postSequence.fulfilled]: (state, action) => {
+      state.status = "succeeded";
+      state.sequences = state.sequences.concat(action.payload);
+    },
+    [postSequence.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
   },
 });
 
 export const selectAllSequences = (state) => state.sequences.sequences;
 
 export const selectSequenceById = (state, sequenceId) =>
-  state.sequences.sequences.find((seq) => seq.id === sequenceId);
+  state.sequences.find((seq) => seq.id === sequenceId);
 
 export const { sequenceAdded, sequenceUpdated } = sequencesSlice.actions;
 

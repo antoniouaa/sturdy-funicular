@@ -31,7 +31,9 @@ export const SequencesList = () => {
   return (
     <section className="sequences-list">
       <h2>Sequences</h2>
-      {renderedSequences}
+      {Boolean(renderedSequences)
+        ? renderedSequences
+        : "No sequences in the database"}
     </section>
   );
 };
