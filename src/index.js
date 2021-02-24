@@ -7,10 +7,8 @@ import { Provider } from "react-redux";
 import * as serviceWorker from "./serviceWorker";
 
 import { fetchSequences } from "./features/Sequences/sequencesSlice";
-import { fetchAllUsers } from "./features/Users/usersSlice";
 
 store.dispatch(fetchSequences());
-store.dispatch(fetchAllUsers());
 
 ReactDOM.render(
   <React.StrictMode>

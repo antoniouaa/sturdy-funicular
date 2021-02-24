@@ -1,15 +1,19 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { shallowEqual, useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import { postSequence } from "./sequencesSlice";
+import { isUserLoggedIn } from "../Users/userSlice";
 
 export const AddSequenceForm = () => {
+  const dispatch = useDispatch();
+  const loggedIn = useSelector(isUserLoggedIn, shallowEqual);
+  const history = useHistory();
+
   const [description, setDescription] = useState("");
   const [species, setSpecies] = useState("");
   const [sequence, setSequence] = useState("");
   const [type, setType] = useState("");
-
-  const dispatch = useDispatch();
 
   const onDescriptionChange = (e) => setDescription(e.target.value);
   const onSpeciesChange = (e) => setSpecies(e.target.value);
@@ -18,19 +22,29 @@ export const AddSequenceForm = () => {
 
   const onSaveClick = () => {
     if (description && species && sequence && type) {
-      dispatch(
-        postSequence({
-          description: description,
-          species: species,
-          sequence: sequence.toUpperCase(),
-          type: type.toUpperCase(),
-        })
-      );
-      setDescription("");
-      setSpecies("");
-      setSequence("");
-      setType("");
+      if (loggedIn) {
+        dispatch(
+          postSequence({
+            description: description,
+            species: species,
+            sequence: sequence.toUpperCase(),
+            type: type.toUpperCase(),
+          })
+        );
+        clearFields();
+      } else {
+        alert("You are not logged in!");
+        clearFields();
+        history.push("/login");
+      }
     }
+  };
+
+  const clearFields = () => {
+    setDescription("");
+    setSpecies("");
+    setSequence("");
+    setType("");
   };
 
   const canSave =

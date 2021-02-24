@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { signUpUser } from "./usersSlice";
+import { signUpUser } from "./userSlice";
 
 export const UserSignupPage = () => {
   const dispatch = useDispatch();
@@ -42,7 +42,8 @@ export const UserSignupPage = () => {
 
   return (
     <div>
-      <h2>User sign up</h2>
+      <h2>Sign up</h2>
+      {}
       <form>
         <label htmlFor="username">Username: </label>
         <input

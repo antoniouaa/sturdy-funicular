@@ -2,23 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { RouteError } from "../../utils/Exceptions";
 
-const initialState = {
-  users: [],
-  status: "idle",
-  error: null,
-};
-
-export const fetchAllUsers = createAsyncThunk("fetchAllUsers", async () => {
-  const response = await fetch("http://127.0.0.1:5000/user", {
-    method: "GET",
-    headers: { "content-type": "application/json" },
-  });
-  const data = await response.json();
-  return data.data.map(({ attributes }) => {
-    return { ...attributes, loggedIn: false };
-  });
-});
-
 export const signUpUser = createAsyncThunk(
   "signUpUser",
   async ({ username, password }) => {
@@ -29,7 +12,7 @@ export const signUpUser = createAsyncThunk(
     });
     const data = await response.json();
     if (response.status === 201) {
-      return { ...data.data.attributes, loggedIn: false };
+      return { ...data.data.attributes, isLoggedIn: false };
     }
     throw new RouteError(data.errors);
   }
@@ -44,43 +27,49 @@ export const loginUser = createAsyncThunk(
       body: JSON.stringify({ username, password }),
     });
     const data = await response.json();
-    return { ...data.data.attributes, token: data.token, loggedIn: true };
+    if (response.status === 201) {
+      const token = await data.data.token;
+      localStorage.setItem("jwtToken", token);
+      return { ...data.data.attributes, token, isLoggedIn: true };
+    }
+    throw new RouteError(data.errors);
   }
 );
 
-const usersSlice = createSlice({
-  name: "users",
-  initialState,
+const userSlice = createSlice({
+  name: "user",
+  initialState: {
+    user: { isLoggedIn: false },
+    status: "idle",
+    error: null,
+  },
   reducers: {},
   extraReducers: {
-    [fetchAllUsers.pending]: (state, action) => {
-      state.status = "loading";
-    },
-    [fetchAllUsers.fulfilled]: (state, action) => {
-      state.status = "succeeded";
-      state.users = state.users.concat(action.payload);
-    },
-    [fetchAllUsers.rejected]: (state, action) => {
-      state.status = "failed";
-      state.error = action.error.message;
-    },
     [signUpUser.pending]: (state, action) => {
       state.status = "loading";
     },
     [signUpUser.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.users = state.users.concat(action.payload);
+      state.user = state.user.concat(action.payload);
     },
     [signUpUser.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error.message;
+    },
+    [loginUser.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [loginUser.fulfilled]: (state, action) => {
+      state.user = action.payload;
+      state.status = "succeeded";
+    },
+    [loginUser.rejected]: (state, action) => {
       state.status = "failed";
       state.error = action.error.message;
     },
   },
 });
 
-export const selectAllUsers = (state) => state.users.users;
+export const isUserLoggedIn = (state) => state.user.isLoggedIn;
 
-export const selectUserByUsername = (state, username) =>
-  state.users.find((user) => user.username === username);
-
-export default usersSlice.reducer;
+export default userSlice.reducer;

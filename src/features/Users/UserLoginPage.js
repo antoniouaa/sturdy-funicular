@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 
-import { loginUser, selectUserByUsername } from "./usersSlice";
+import { loginUser } from "./userSlice";
 
 export const UserLoginPage = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -18,7 +20,7 @@ export const UserLoginPage = () => {
   };
 
   const onLoginClick = (e) => {
-    if (canLogin && Boolean(selectUserByUsername(username))) {
+    if (canLogin) {
       dispatch(
         loginUser({
           username,
@@ -27,6 +29,7 @@ export const UserLoginPage = () => {
       );
       setUsername("");
       setPassword("");
+      history.push("/home");
     } else {
       alert("User doesn't exist!");
     }
@@ -36,7 +39,7 @@ export const UserLoginPage = () => {
 
   return (
     <div>
-      <h2>User sign up</h2>
+      <h2>Login</h2>
       <form>
         <label htmlFor="username">Username: </label>
         <input
@@ -56,11 +59,19 @@ export const UserLoginPage = () => {
         <br />
         <input
           type="button"
-          value="Sign Up"
+          value="Log in"
           onClick={onLoginClick}
           disabled={!canLogin}
         />
       </form>
+      <p>
+        Don't have an account? <br />
+        <input
+          type="button"
+          value="Sign up"
+          onClick={() => history.push("/signup")}
+        />
+      </p>
     </div>
   );
 };

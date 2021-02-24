@@ -9,6 +9,8 @@ import { SequencePage } from "./features/Sequences/SequencePage";
 import { SequencesList } from "./features/Sequences/SequencesList";
 import { UserSignupPage } from "./features/Users/UserSignupPage";
 import { UserLoginPage } from "./features/Users/UserLoginPage";
+import { HomePage } from "./features/Users/UserHomePage";
+import { PrivateRoute } from "./utils/PrivateRoute";
 
 function App() {
   return (
@@ -25,6 +27,12 @@ function App() {
             exact
             path="/sequences/:sequenceId/edit"
             component={EditSequenceForm}
+          />
+          <PrivateRoute
+            exact
+            path="/home"
+            restricted={true}
+            component={HomePage}
           />
           <Redirect to="/" />
         </Switch>
