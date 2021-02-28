@@ -2,7 +2,6 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 
 import { RouteError } from "../../utils/Exceptions";
 
-const token = "";
 const initialState = {
   sequences: [],
   status: "idle",
@@ -10,7 +9,7 @@ const initialState = {
 };
 
 export const fetchSequences = createAsyncThunk("fetchSequences", async () => {
-  const response = await fetch("http://127.0.0.1:5000/seq", {
+  const response = await fetch("/seq", {
     method: "GET",
     headers: { "content-type": "application/json" },
   });
@@ -18,22 +17,27 @@ export const fetchSequences = createAsyncThunk("fetchSequences", async () => {
   return data.data.map((seq) => seq.attributes);
 });
 
-export const postSequence = createAsyncThunk("postSequence", async (body) => {
-  const response = await fetch("http://127.0.0.1:5000/seq", {
-    method: "POST",
-    headers: {
-      "content-type": "application/json",
-      authorization: `Bearer ${token}`,
-    },
-    body: JSON.stringify(body),
-  });
-  const data = await response.json();
-  console.log("data:", data);
-  if (response.status === 201) {
-    return data.data.attributes;
+export const postSequence = createAsyncThunk(
+  "postSequence",
+  async (payload) => {
+    console.log(payload);
+    const { description, species, type, sequence } = payload;
+    const { token } = payload;
+    const response = await fetch("/seq", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ description, species, type, sequence }),
+    });
+    const data = await response.json();
+    if (response.status === 201) {
+      return data.data.attributes;
+    }
+    throw new RouteError(data.errors);
   }
-  throw new RouteError(data.errors);
-});
+);
 
 export const patchSequence = createAsyncThunk(
   "patchSequence",

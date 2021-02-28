@@ -24,7 +24,6 @@ export const UserSignupPage = () => {
 
   const onSignupClick = (e) => {
     if (canSignup) {
-      console.log(username, password, email);
       dispatch(
         signUpUser({
           username,

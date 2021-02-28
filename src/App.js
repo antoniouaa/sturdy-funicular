@@ -9,6 +9,7 @@ import { SequencePage } from "./features/Sequences/SequencePage";
 import { SequencesList } from "./features/Sequences/SequencesList";
 import { UserSignupPage } from "./features/Users/UserSignupPage";
 import { UserLoginPage } from "./features/Users/UserLoginPage";
+import { UserLogoutPage } from "./features/Users/UserLogoutPage";
 import { HomePage } from "./features/Users/UserHomePage";
 import { PrivateRoute } from "./utils/PrivateRoute";
 
@@ -22,6 +23,7 @@ function App() {
           <Route exact path="/" component={SequencesList} />
           <Route exact path="/signup" component={UserSignupPage} />
           <Route exact path="/login" component={UserLoginPage} />
+          <Route exact path="/logout" component={UserLogoutPage} />
           <Route exact path="/sequences/:sequenceId" component={SequencePage} />
           <Route
             exact

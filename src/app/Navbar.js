@@ -1,12 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { useSelector, shallowEqual } from "react-redux";
+import { useSelector } from "react-redux";
 
 import { isUserLoggedIn } from "../features/Users/userSlice";
 
 export const Navbar = () => {
-  const loggedIn = useSelector(isUserLoggedIn, shallowEqual);
-  console.log("logged in: ", loggedIn);
+  const loggedIn = useSelector(isUserLoggedIn);
   return (
     <nav>
       <section>
@@ -17,9 +16,14 @@ export const Navbar = () => {
               Posts
             </Link>
             {loggedIn ? (
-              <Link className="navLink" to="/home">
-                Home
-              </Link>
+              <>
+                <Link className="navLink" to="/home">
+                  Home
+                </Link>
+                <Link className="navLink" to="/logout">
+                  Log out
+                </Link>
+              </>
             ) : (
               <>
                 <Link className="navLink" to="/signup">

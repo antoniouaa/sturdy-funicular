@@ -3,11 +3,12 @@ import { shallowEqual, useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import { postSequence } from "./sequencesSlice";
-import { isUserLoggedIn } from "../Users/userSlice";
+import { isUserLoggedIn, getToken } from "../Users/userSlice";
 
 export const AddSequenceForm = () => {
   const dispatch = useDispatch();
   const loggedIn = useSelector(isUserLoggedIn, shallowEqual);
+  const token = useSelector(getToken);
   const history = useHistory();
 
   const [description, setDescription] = useState("");
@@ -21,6 +22,7 @@ export const AddSequenceForm = () => {
   const onTypeChange = (e) => setType(e.target.value);
 
   const onSaveClick = () => {
+    console.log(token);
     if (description && species && sequence && type) {
       if (loggedIn) {
         dispatch(
@@ -29,6 +31,7 @@ export const AddSequenceForm = () => {
             species: species,
             sequence: sequence.toUpperCase(),
             type: type.toUpperCase(),
+            token,
           })
         );
         clearFields();

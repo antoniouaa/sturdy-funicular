@@ -19,20 +19,18 @@ export const UserLoginPage = () => {
     setPassword(e.target.value);
   };
 
-  const onLoginClick = (e) => {
-    if (canLogin) {
-      dispatch(
-        loginUser({
-          username,
-          password,
-        })
-      );
-      setUsername("");
-      setPassword("");
-      history.push("/home");
-    } else {
-      alert("User doesn't exist!");
+  const onLoginClick = async () => {
+    const res = await dispatch(
+      loginUser({
+        username,
+        password,
+      })
+    );
+    if (res.error) {
+      alert("user does not exist");
+      return;
     }
+    history.push("/");
   };
 
   const canLogin = Boolean(username) && Boolean(password);

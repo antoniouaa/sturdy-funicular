@@ -5,14 +5,14 @@ import { RouteError } from "../../utils/Exceptions";
 export const signUpUser = createAsyncThunk(
   "signUpUser",
   async ({ username, password }) => {
-    const response = await fetch("http://127.0.0.1:5000/user/signup", {
+    const response = await fetch("/user/signup", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ username, password }),
     });
     const data = await response.json();
     if (response.status === 201) {
-      return { ...data.data.attributes, isLoggedIn: false };
+      return { isLoggedIn: false };
     }
     throw new RouteError(data.errors);
   }
@@ -21,7 +21,7 @@ export const signUpUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "loginUser",
   async ({ username, password }) => {
-    const response = await fetch("http://127.0.0.1:5000/user/login", {
+    const response = await fetch("/user/login", {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ username, password }),
@@ -35,6 +35,10 @@ export const loginUser = createAsyncThunk(
     throw new RouteError(data.errors);
   }
 );
+
+export const logoutUser = createAsyncThunk("logoutUser", async () => {
+  return { status: "idle", error: null, user: { isLoggedIn: false } };
+});
 
 const userSlice = createSlice({
   name: "user",
@@ -50,7 +54,6 @@ const userSlice = createSlice({
     },
     [signUpUser.fulfilled]: (state, action) => {
       state.status = "succeeded";
-      state.user = state.user.concat(action.payload);
     },
     [signUpUser.rejected]: (state, action) => {
       state.status = "failed";
@@ -65,11 +68,24 @@ const userSlice = createSlice({
     },
     [loginUser.rejected]: (state, action) => {
       state.status = "failed";
-      state.error = action.error.message;
+      state.error = action.error;
+    },
+    [logoutUser.pending]: (state, action) => {
+      state.status = "loading";
+    },
+    [logoutUser.fulfilled]: (state, action) => {
+      state.user = action.payload;
+      state.status = "succeeded";
+    },
+    [logoutUser.rejected]: (state, action) => {
+      state.status = "failed";
+      state.error = action.error;
     },
   },
 });
 
-export const isUserLoggedIn = (state) => state.user.isLoggedIn;
+export const isUserLoggedIn = (state) => state.user.user.isLoggedIn;
+export const getError = (state) => state.user.error;
+export const getToken = (state) => state.user.user.token;
 
 export default userSlice.reducer;
