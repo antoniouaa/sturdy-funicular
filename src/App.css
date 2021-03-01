@@ -67,3 +67,7 @@ nav {
     border: solid rgb(112, 76, 182);
     border-radius: 5px;
 }
+
+p {
+    word-break: break-all;
+}
