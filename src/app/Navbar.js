@@ -10,16 +10,15 @@ export const Navbar = () => {
     <nav>
       <section>
         <div className="navContent">
-          <h1>genome_sequencer</h1>
+          <Link className="navLink" to="/home">
+            <h1>genome_sequencer</h1>
+          </Link>
           <div className="navLinks">
-            <Link className="navLink" to="/">
+            <Link className="navLink" to="/posts">
               Posts
             </Link>
             {loggedIn ? (
               <>
-                <Link className="navLink" to="/home">
-                  Home
-                </Link>
                 <Link className="navLink" to="/logout">
                   Log out
                 </Link>
@@ -35,7 +34,7 @@ export const Navbar = () => {
               </>
             )}
 
-            <Link className="navLink" to="#">
+            <Link className="navLink" to="/about">
               About
             </Link>
           </div>

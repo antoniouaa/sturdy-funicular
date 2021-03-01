@@ -30,14 +30,14 @@ export const UserLoginPage = () => {
       alert("user does not exist");
       return;
     }
-    history.push("/");
+    history.push("/home");
   };
 
   const canLogin = Boolean(username) && Boolean(password);
 
   return (
     <div>
-      <h2>Login</h2>
+      <h1>Login</h1>
       <form>
         <label htmlFor="username">Username: </label>
         <input

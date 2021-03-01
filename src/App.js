@@ -5,6 +5,7 @@ import "./App.css";
 
 import { Navbar } from "./app/Navbar";
 import { Sidebar } from "./app/Sidebar";
+import { About } from "./app/About";
 import { EditSequenceForm } from "./features/Sequences/EditSequenceForm";
 import { SequencePage } from "./features/Sequences/SequencePage";
 import { SequencesList } from "./features/Sequences/SequencesList";
@@ -12,7 +13,6 @@ import { UserSignupPage } from "./features/Users/UserSignupPage";
 import { UserLoginPage } from "./features/Users/UserLoginPage";
 import { UserLogoutPage } from "./features/Users/UserLogoutPage";
 import { HomePage } from "./features/Users/UserHomePage";
-import { PrivateRoute } from "./utils/PrivateRoute";
 import {
   isUserLoggedIn,
   getToken,
@@ -38,7 +38,9 @@ function App() {
       <div className="App">
         <Sidebar />
         <Switch>
-          <Route exact path="/" component={SequencesList} />
+          <Route exact path="/home" component={HomePage} />
+          <Route exact path="/about" component={About} />
+          <Route exact path="/posts" component={SequencesList} />
           <Route exact path="/signup" component={UserSignupPage} />
           <Route exact path="/login" component={UserLoginPage} />
           <Route exact path="/logout" component={UserLogoutPage} />
@@ -48,13 +50,7 @@ function App() {
             path="/sequences/:sequenceId/edit"
             component={EditSequenceForm}
           />
-          <PrivateRoute
-            exact
-            path="/home"
-            restricted={true}
-            component={HomePage}
-          />
-          <Redirect to="/" />
+          <Redirect to="/home" />
         </Switch>
       </div>
     </BrowserRouter>

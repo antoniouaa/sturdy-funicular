@@ -32,11 +32,13 @@ export const SequencesList = () => {
   ));
 
   return (
-    <section className="sequences-list">
-      <h2>Sequences</h2>
-      {Boolean(renderedSequences)
-        ? renderedSequences
-        : "No sequences in the database"}
-    </section>
+    <div className="sequences-list">
+      <h1>Sequences</h1>
+      <section>
+        {Boolean(renderedSequences)
+          ? renderedSequences
+          : "No sequences in the database"}
+      </section>
+    </div>
   );
 };

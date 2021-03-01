@@ -15,6 +15,7 @@ export const UserLogoutPage = () => {
 
   return (
     <div>
+      <h1>Log out?</h1>
       <input type="button" onClick={onHomeClick} value="Log out?" />
     </div>
   );

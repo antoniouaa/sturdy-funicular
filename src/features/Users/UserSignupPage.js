@@ -41,8 +41,7 @@ export const UserSignupPage = () => {
 
   return (
     <div>
-      <h2>Sign up</h2>
-      {}
+      <h1>Sign up</h1>
       <form>
         <label htmlFor="username">Username: </label>
         <input
