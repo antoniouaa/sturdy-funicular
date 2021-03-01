@@ -1,1 +1,13 @@
+[[redirects]]
+  from = "/user/*"
+  to = "https://genome-sequencer.herokuapp.com/user"
+  status = 200
+  force = true
+  headers = {X-From = "Netlify"}
 
+[[redirects]]
+  from = "/seq/*"
+  to = "https://genome-sequencer.herokuapp.com/seq"
+  status = 200
+  force = true
+  headers = {X-From = "Netlify"}
