@@ -22,7 +22,6 @@ export const AddSequenceForm = () => {
   const onTypeChange = (e) => setType(e.target.value);
 
   const onSaveClick = () => {
-    console.log(token);
     if (description && species && sequence && type) {
       if (loggedIn) {
         dispatch(
@@ -89,7 +88,12 @@ export const AddSequenceForm = () => {
         />
         <br />
         <label htmlFor="sequenceType">Type: </label>
-        <select name="type" id="type-select" required onChange={onTypeChange}>
+        <select
+          name="type"
+          id="type-select"
+          required
+          value={type}
+          onChange={onTypeChange}>
           <option value="PROTEIN_FULL">Protein Full</option>
           <option value="PROTEIN_FRAGMENT">Protein Fragment</option>
           <option value="DNA">DNA</option>

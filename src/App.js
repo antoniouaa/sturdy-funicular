@@ -12,7 +12,7 @@ import { SequencesList } from "./features/Sequences/SequencesList";
 import { UserSignupPage } from "./features/Users/UserSignupPage";
 import { UserLoginPage } from "./features/Users/UserLoginPage";
 import { UserLogoutPage } from "./features/Users/UserLogoutPage";
-import { HomePage } from "./features/Users/UserHomePage";
+import { HomePage } from "./app/HomePage";
 import {
   isUserLoggedIn,
   getToken,

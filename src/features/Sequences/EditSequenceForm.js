@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import { patchSequence } from "./sequencesSlice";
-import { getToken } from "../Users/userSlice";
+import { getToken, isUserLoggedIn } from "../Users/userSlice";
 
 export const EditSequenceForm = ({ match }) => {
   const dispatch = useDispatch();
@@ -13,6 +13,7 @@ export const EditSequenceForm = ({ match }) => {
   const seq = useSelector((state) =>
     state.sequences.sequences.find((seq_) => seq_.id.toString() === sequenceId)
   );
+  const loggedIn = useSelector(isUserLoggedIn);
   const token = useSelector(getToken);
 
   const [description, setDescription] = useState(seq.description);
@@ -26,18 +27,23 @@ export const EditSequenceForm = ({ match }) => {
   const onTypeChange = (e) => setType(e.target.value);
 
   const onSaveClick = () => {
-    if (description && species && sequence && type) {
-      dispatch(
-        patchSequence({
-          id: sequenceId,
-          description,
-          species,
-          sequence,
-          type,
-          token,
-        })
-      );
-      history.push(`/sequences/${sequenceId}`);
+    if (loggedIn) {
+      if (description && species && sequence && type) {
+        dispatch(
+          patchSequence({
+            id: sequenceId,
+            description,
+            species,
+            sequence,
+            type,
+            token,
+          })
+        );
+        history.push(`/sequences/${sequenceId}`);
+      }
+    } else {
+      alert("You're not logged in!");
+      history.push("/login");
     }
   };
 
