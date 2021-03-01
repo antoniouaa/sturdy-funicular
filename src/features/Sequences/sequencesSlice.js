@@ -9,7 +9,7 @@ const initialState = {
 };
 
 export const fetchSequences = createAsyncThunk("fetchSequences", async () => {
-  const response = await fetch(`${process.env.REACT_BACKEND}/seq`, {
+  const response = await fetch(`/seq`, {
     method: "GET",
     headers: { "content-type": "application/json" },
   });
@@ -22,7 +22,7 @@ export const postSequence = createAsyncThunk(
   async (payload) => {
     const { description, species, type, sequence } = payload;
     const { token } = payload;
-    const response = await fetch(`${process.env.REACT_BACKEND}/seq`, {
+    const response = await fetch(`/seq`, {
       method: "POST",
       headers: {
         "content-type": "application/json",

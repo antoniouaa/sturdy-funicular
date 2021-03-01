@@ -5,7 +5,7 @@ import { RouteError } from "../../utils/Exceptions";
 export const signUpUser = createAsyncThunk(
   "signUpUser",
   async ({ username, password }) => {
-    const response = await fetch(`${process.env.REACT_BACKEND}/user/signup`, {
+    const response = await fetch(`/user/signup`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ username, password }),
@@ -21,7 +21,7 @@ export const signUpUser = createAsyncThunk(
 export const loginUser = createAsyncThunk(
   "loginUser",
   async ({ username, password }) => {
-    const response = await fetch(`${process.env.REACT_BACKEND}/user/login`, {
+    const response = await fetch(`/user/login`, {
       method: "POST",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ username, password }),
@@ -42,7 +42,7 @@ export const logoutUser = createAsyncThunk("logoutUser", async () => {
 export const fetchRefreshToken = createAsyncThunk(
   "fetchRefreshToken",
   async (token) => {
-    const response = await fetch(`${process.env.REACT_BACKEND}/user/refresh`, {
+    const response = await fetch(`/user/refresh`, {
       method: "POST",
       headers: {
         "content-type": "application/json",
