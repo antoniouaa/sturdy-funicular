@@ -89,13 +89,12 @@ export const AddSequenceForm = () => {
         />
         <br />
         <label htmlFor="sequenceType">Type: </label>
-        <input
-          type="text"
-          id="sequenceType"
-          name="sequenceType"
-          value={type}
-          onChange={onTypeChange}
-        />
+        <select name="type" id="type-select" required onChange={onTypeChange}>
+          <option value="PROTEIN_FULL">Protein Full</option>
+          <option value="PROTEIN_FRAGMENT">Protein Fragment</option>
+          <option value="DNA">DNA</option>
+          <option value="RNA">RNA</option>
+        </select>
         <br />
         <input
           type="button"

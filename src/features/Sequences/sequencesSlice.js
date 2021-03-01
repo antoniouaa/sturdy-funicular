@@ -20,7 +20,6 @@ export const fetchSequences = createAsyncThunk("fetchSequences", async () => {
 export const postSequence = createAsyncThunk(
   "postSequence",
   async (payload) => {
-    console.log(payload);
     const { description, species, type, sequence } = payload;
     const { token } = payload;
     const response = await fetch("/seq", {

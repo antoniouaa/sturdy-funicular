@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
 import "./App.css";
 
 import { Navbar } from "./app/Navbar";
@@ -12,8 +13,25 @@ import { UserLoginPage } from "./features/Users/UserLoginPage";
 import { UserLogoutPage } from "./features/Users/UserLogoutPage";
 import { HomePage } from "./features/Users/UserHomePage";
 import { PrivateRoute } from "./utils/PrivateRoute";
+import {
+  isUserLoggedIn,
+  getToken,
+  fetchRefreshToken,
+} from "./features/Users/userSlice";
 
 function App() {
+  const dispatch = useDispatch();
+  const loggedIn = useSelector(isUserLoggedIn);
+  const token = useSelector(getToken);
+
+  useEffect(() => {
+    if (loggedIn) {
+      setInterval(() => {
+        dispatch(fetchRefreshToken(token));
+      }, 50000);
+    }
+  }, [loggedIn]);
+
   return (
     <BrowserRouter>
       <Navbar />

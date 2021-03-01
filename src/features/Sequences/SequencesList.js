@@ -21,7 +21,10 @@ export const SequencesList = () => {
       <p>
         {seq.species} - Type: {seq.type}
       </p>
-      <p className="sequence-content">{seq.sequence.toUpperCase()}</p>
+      <p className="sequence-content">
+        {seq.sequence.toUpperCase().slice(0, 150)}
+        {seq.sequence.length > 150 ? "..." : null}
+      </p>
       <Link to={`/sequences/${seq.id}`} className="button muted-button">
         View Sequence
       </Link>
