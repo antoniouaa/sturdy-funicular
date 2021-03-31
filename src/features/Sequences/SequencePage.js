@@ -16,6 +16,8 @@ export const SequencePage = ({ match }) => {
     );
   }
 
+  const dnaAttributes = sequence["dna_attributes"];
+
   return (
     <section>
       <article className="sequence">
@@ -24,8 +26,23 @@ export const SequencePage = ({ match }) => {
           {sequence.userId ? `-by ${sequence.userId}` : null}
         </span>
         <h4>{sequence.description}</h4>
-        <p>{sequence.type}</p>
-        <p>{sequence.sequence}</p>
+        <p>
+          <strong>{sequence.type}: </strong>
+          {sequence.sequence}
+        </p>
+        <section>
+          <p>
+            <strong>GC Content:</strong> {dnaAttributes["gc_content"]}
+          </p>
+          <p>
+            <strong>Reverse complement:</strong>{" "}
+            {dnaAttributes["reverse_complement"]}
+          </p>
+          <p>
+            <strong>RNA Transcription:</strong>{" "}
+            {dnaAttributes["rna_transcription"]}
+          </p>
+        </section>
         <Link to={`/sequences/${sequence.id}/edit`} className="button">
           Edit Sequence
         </Link>

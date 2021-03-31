@@ -88,11 +88,26 @@ const sequencesSlice = createSlice({
       state.status = "loading";
     },
     [patchSequence.fulfilled]: (state, action) => {
-      const { description, sequence, type, species, id } = action.payload;
+      const {
+        description,
+        sequence,
+        type,
+        species,
+        id,
+        dna_attributes,
+      } = action.payload;
       state.status = "succeeded";
       state.sequences = state.sequences.map((seq) => {
         if (seq.id === id) {
-          return { ...seq, description, sequence, type, species, id };
+          return {
+            ...seq,
+            description,
+            sequence,
+            type,
+            species,
+            id,
+            dna_attributes,
+          };
         }
         return seq;
       });
