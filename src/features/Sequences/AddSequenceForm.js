@@ -79,10 +79,12 @@ export const AddSequenceForm = () => {
         />
         <br />
         <label htmlFor="sequenceSequence">Sequence: </label>
-        <input
+        <textarea
           type="text"
           id="sequenceSequence"
           name="sequenceSequence"
+          cols="15"
+          rows="2"
           value={sequence}
           onChange={onSequenceChange}
         />

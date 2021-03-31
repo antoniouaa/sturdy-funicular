@@ -71,3 +71,7 @@ nav {
 p {
     word-break: break-all;
 }
+
+#sequenceSequence {
+    resize: vertical;
+}
